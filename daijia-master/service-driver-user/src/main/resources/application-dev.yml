@@ -25,3 +25,8 @@ spring:
     url: jdbc:mysql://localhost:3306/daijia_customer?character-Encoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: zdf19941118.
+
+weixin:
+  miniapp:
+    appId: wxf0fd4d7ea0b0e981
+    appSecret: 1fac9ac16a6d57f03c59a3b397f247df
