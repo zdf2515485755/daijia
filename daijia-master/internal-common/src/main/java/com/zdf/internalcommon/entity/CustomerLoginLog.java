@@ -5,35 +5,44 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
 /**
- * spuͼƬ
+ * 客户登录记录
  * @author mrzhang
- * @TableName pms_spu_images
+ * @TableName customer_login_log
  */
-@TableName(value ="pms_spu_images")
+@EqualsAndHashCode(callSuper = true)
+@TableName(value ="customer_login_log")
 @Data
-public class PmsSpuImages implements Serializable {
+public class CustomerLoginLog extends BaseEntity implements Serializable {
     /**
-     * id
+     * 访问ID
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * spu_id
+     * 客户id
      */
-    private Long spuId;
+    private String customerId;
 
-    private String imgName;
+    /**
+     * 登录IP地址
+     */
+    private String ipaddr;
 
-    private String imgUrl;
+    /**
+     * 登录状态
+     */
+    private Integer status;
 
-    private Integer imgSort;
-
-    private Integer defaultImg;
+    /**
+     * 提示信息
+     */
+    private String msg;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

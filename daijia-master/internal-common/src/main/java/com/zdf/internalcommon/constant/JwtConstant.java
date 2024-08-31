@@ -11,6 +11,7 @@ public class JwtConstant {
     public static final String JWT_TOKEN_PHONE = "tokenPhone";
     public static final String JWT_TOKEN_NAME = "tokenName";
     public static final String JWT_TOKEN_PASSWORD = "tokenPassword";
+    public static final String JWT_TOKEN_ID = "tokenId";
 
     private JwtConstant(){}
 }

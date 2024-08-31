@@ -11,6 +11,8 @@ import lombok.Data;
 public class UserConstant {
     public static final String PHONE_PATTERN = "^1((3\\d)|(4[5-9])|(5[0-3,5-9])|(6[5,6])|(7\\d)|(8\\d)|(9[189]))\\d{8}$";
     public static final int IS_DELETED = 1;
-    public static final int IS_NORMAL = 0;
+    public static final int IS_NOT_DELETED = 0;
+    public static final int IS_NORMAL = 1;
+    public static final String LOGIN_MESSAGE = "weixin";
     private UserConstant(){}
 }

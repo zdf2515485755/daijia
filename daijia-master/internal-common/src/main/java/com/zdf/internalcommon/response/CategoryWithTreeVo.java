@@ -1,6 +1,5 @@
 package com.zdf.internalcommon.response;
 
-import com.zdf.internalcommon.entity.PmsCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
