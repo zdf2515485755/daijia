@@ -1,12 +1,13 @@
-package com.zdf.servicedriveruser.interceptor;
+package com.zdf.apiuser.interceptor;
 
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
+import com.zdf.apiuser.exception.TokenVerifyException;
 import com.zdf.internalcommon.annotation.PassTokenCheck;
 import com.zdf.internalcommon.constant.JwtConstant;
 import com.zdf.internalcommon.constant.RedisConstant;
 import com.zdf.internalcommon.constant.StatusCode;
-import com.zdf.servicedriveruser.exception.TokenVerifyException;
+import com.zdf.internalcommon.util.ThreadLocalUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -47,8 +48,8 @@ public class LogInInterceptor implements HandlerInterceptor {
         }
         //检查token是否过期
         JWT jwt = JWTUtil.parseToken(token);
-        String phone = (String)jwt.getPayload(JwtConstant.JWT_TOKEN_NAME);
-        String tokenKey = RedisConstant.TOKEN_KEY_PREFIX + phone;
+        String userId= (String)jwt.getPayload(JwtConstant.JWT_TOKEN_ID);
+        String tokenKey = RedisConstant.TOKEN_KEY_PREFIX + userId;
         String redisToken = (String)redisTemplate.opsForValue().get(tokenKey);
         if (Objects.isNull(redisToken)){
             throw new TokenVerifyException(StatusCode.TOKEN_HAS_EXPIRED.getMessage());
@@ -58,6 +59,7 @@ public class LogInInterceptor implements HandlerInterceptor {
         if (!verifyResult){
             throw new TokenVerifyException(StatusCode.TOKEN_IS_ERROR.getMessage());
         }
+        ThreadLocalUtil.set(userId);
         //token续期
         redisTemplate.opsForValue().set(tokenKey, token, RedisConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return Boolean.TRUE;

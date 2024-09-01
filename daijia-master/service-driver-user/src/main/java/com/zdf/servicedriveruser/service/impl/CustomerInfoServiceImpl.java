@@ -67,4 +67,13 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
         customerLoginLogMapper.insert(customerLoginLog);
         return ResponseResult.success(userId);
     }
+
+    @Override
+    public ResponseResult<CustomerInfo> getUserInfo(Long userId) {
+        CustomerInfo customerInfo = customerInfoMapper.selectById(userId);
+        if (Objects.isNull(customerInfo)){
+            return ResponseResult.fail("user is not exist");
+        }
+        return ResponseResult.success(customerInfo) ;
+    }
 }

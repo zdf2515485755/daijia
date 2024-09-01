@@ -1,5 +1,6 @@
 package com.zdf.servicedriveruser.controller;
 
+import com.zdf.internalcommon.entity.CustomerInfo;
 import com.zdf.internalcommon.result.ResponseResult;
 import com.zdf.servicedriveruser.service.CustomerInfoService;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  *@Description 类功能简要描述
@@ -25,5 +27,10 @@ public class UserController {
     @GetMapping("/login/{code}")
     public ResponseResult<Long> login(@PathVariable String code) throws WxErrorException {
         return customerInfoService.login(code);
+    }
+
+    @GetMapping("/getUserInfo/{userId}")
+    public ResponseResult<CustomerInfo> getUserInfo(@NotNull @PathVariable Long userId){
+        return customerInfoService.getUserInfo(userId);
     }
 }

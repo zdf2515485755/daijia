@@ -12,4 +12,5 @@ import me.chanjar.weixin.common.error.WxErrorException;
 */
 public interface CustomerInfoService extends IService<CustomerInfo> {
     ResponseResult<Long> login(String code) throws WxErrorException;
+    ResponseResult<CustomerInfo> getUserInfo(Long userId);
 }

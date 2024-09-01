@@ -1,6 +1,7 @@
 package com.zdf.apiuser.controller;
 
 import com.zdf.apiuser.service.UserService;
+import com.zdf.internalcommon.response.UserInfoVo;
 import com.zdf.internalcommon.result.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,5 +25,10 @@ public class UserController {
     @GetMapping("/login/{code}")
     public ResponseResult<String> login(@PathVariable String code) {
         return userService.login(code);
+    }
+
+    @GetMapping("/getUserInfo")
+    public ResponseResult<UserInfoVo> getUserInfo() {
+        return userService.getUserInfo();
     }
 }

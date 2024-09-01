@@ -1,4 +1,4 @@
-package com.zdf.servicedriveruser.exception;
+package com.zdf.apiuser.exception;
 
 import lombok.NoArgsConstructor;
 

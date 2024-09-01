@@ -6,7 +6,11 @@ import com.zdf.apiuser.service.UserService;
 import com.zdf.internalcommon.constant.JwtConstant;
 import com.zdf.internalcommon.constant.RedisConstant;
 import com.zdf.internalcommon.constant.StatusCode;
+import com.zdf.internalcommon.entity.CustomerInfo;
+import com.zdf.internalcommon.response.UserInfoVo;
 import com.zdf.internalcommon.result.ResponseResult;
+import com.zdf.internalcommon.util.ThreadLocalUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +45,18 @@ public class UserServiceImpl implements UserService {
         String tokenKey = RedisConstant.TOKEN_KEY_PREFIX + data;
         redisTemplate.opsForValue().set(tokenKey, token, RedisConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return ResponseResult.success(token);
+    }
+
+    @Override
+    public ResponseResult<UserInfoVo> getUserInfo() {
+        Long userId = (Long)ThreadLocalUtil.get();
+        ResponseResult<CustomerInfo> userInfo = serviceDriverUserClient.getUserInfo(userId);
+        if (userInfo.getCode() != StatusCode.SUCCESS.getCode()) {
+            return ResponseResult.fail("request failure");
+        }
+        CustomerInfo customerInfo = userInfo.getData();
+        UserInfoVo userInfoVo = new UserInfoVo();
+        BeanUtils.copyProperties(customerInfo, userInfoVo);
+        return ResponseResult.success(userInfoVo);
     }
 }
