@@ -1,10 +1,13 @@
 package com.zdf.apiuser.client;
 
 import com.zdf.internalcommon.entity.CustomerInfo;
+import com.zdf.internalcommon.request.UpdateUserPhoneDto;
 import com.zdf.internalcommon.result.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.constraints.NotNull;
 
@@ -16,8 +19,10 @@ import javax.validation.constraints.NotNull;
 @FeignClient("service-driver-user")
 public interface ServiceDriverUserClient {
 
-    @GetMapping("/login/{code}")
+    @GetMapping("/user/login/{code}")
     ResponseResult<Long> login(@PathVariable String code);
-    @GetMapping("/getUserInfo/{userId}")
+    @GetMapping("/user/getUserInfo/{userId}")
     ResponseResult<CustomerInfo> getUserInfo(@NotNull @PathVariable Long userId);
+    @PostMapping("/user/updateUserPhone")
+    ResponseResult<String>updateUserPhone(@RequestBody UpdateUserPhoneDto updateUserPhoneDto);
 }

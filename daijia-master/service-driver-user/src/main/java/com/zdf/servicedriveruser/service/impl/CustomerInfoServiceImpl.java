@@ -2,11 +2,13 @@ package com.zdf.servicedriveruser.service.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zdf.internalcommon.constant.UserConstant;
 import com.zdf.internalcommon.entity.CustomerInfo;
 import com.zdf.internalcommon.entity.CustomerLoginLog;
+import com.zdf.internalcommon.request.UpdateUserPhoneDto;
 import com.zdf.internalcommon.result.ResponseResult;
 import com.zdf.servicedriveruser.mapper.CustomerInfoMapper;
 import com.zdf.servicedriveruser.mapper.CustomerLoginLogMapper;
@@ -34,12 +36,12 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
     private CustomerLoginLogMapper customerLoginLogMapper;
 
     @Override
-    public ResponseResult<Long> login(String code) throws WxErrorException {
+    public ResponseResult<Long> login(String code) throws RuntimeException {
         WxMaJscode2SessionResult sessionInfo;
         try {
             sessionInfo = wxMaService.getUserService().getSessionInfo(code);
         } catch (WxErrorException e) {
-            throw new WxErrorException(e.getMessage());
+            throw new RuntimeException(e);
         }
         String openid = sessionInfo.getOpenid();
         //查看是否有对应的用户
@@ -75,5 +77,25 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
             return ResponseResult.fail("user is not exist");
         }
         return ResponseResult.success(customerInfo) ;
+    }
+
+    @Override
+    public ResponseResult<String> updateUserPhone(UpdateUserPhoneDto updateUserPhoneDto) throws RuntimeException{
+        String phoneNumber;
+        try {
+            WxMaPhoneNumberInfo phoneNumberInfo = wxMaService.getUserService().getPhoneNumber(updateUserPhoneDto.getCode());
+            phoneNumber = phoneNumberInfo.getPhoneNumber();
+        } catch (WxErrorException e) {
+            throw new RuntimeException(e);
+        }
+        Long userId = updateUserPhoneDto.getUserId();
+        CustomerInfo customerInfo = customerInfoMapper.selectById(userId);
+        customerInfo.setPhone(phoneNumber);
+        int count = customerInfoMapper.updateById(customerInfo);
+        if (count != 1){
+            return ResponseResult.fail("update user phone failed");
+        }else {
+            return ResponseResult.success("update user phone success");
+        }
     }
 }

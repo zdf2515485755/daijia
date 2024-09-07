@@ -1,12 +1,10 @@
 package com.zdf.apiuser.controller;
 
 import com.zdf.apiuser.service.UserService;
+import com.zdf.internalcommon.request.UpdateUserPhoneDto;
 import com.zdf.internalcommon.response.UserInfoVo;
 import com.zdf.internalcommon.result.ResponseResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -30,5 +28,9 @@ public class UserController {
     @GetMapping("/getUserInfo")
     public ResponseResult<UserInfoVo> getUserInfo() {
         return userService.getUserInfo();
+    }
+    @PostMapping("/updateUserPhone")
+    public ResponseResult<Boolean>updateUserPhone(@RequestBody UpdateUserPhoneDto updateUserPhoneDto){
+        return userService.updateUserPhone(updateUserPhoneDto);
     }
 }

@@ -1,5 +1,6 @@
 package com.zdf.apiuser.service;
 
+import com.zdf.internalcommon.request.UpdateUserPhoneDto;
 import com.zdf.internalcommon.response.UserInfoVo;
 import com.zdf.internalcommon.result.ResponseResult;
 
@@ -12,4 +13,5 @@ import com.zdf.internalcommon.result.ResponseResult;
 public interface UserService {
     ResponseResult<String> login(String code);
     ResponseResult<UserInfoVo> getUserInfo();
+    ResponseResult<Boolean>updateUserPhone(UpdateUserPhoneDto updateUserPhoneDto);
 }

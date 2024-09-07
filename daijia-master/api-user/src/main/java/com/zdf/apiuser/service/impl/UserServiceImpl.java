@@ -7,6 +7,7 @@ import com.zdf.internalcommon.constant.JwtConstant;
 import com.zdf.internalcommon.constant.RedisConstant;
 import com.zdf.internalcommon.constant.StatusCode;
 import com.zdf.internalcommon.entity.CustomerInfo;
+import com.zdf.internalcommon.request.UpdateUserPhoneDto;
 import com.zdf.internalcommon.response.UserInfoVo;
 import com.zdf.internalcommon.result.ResponseResult;
 import com.zdf.internalcommon.util.ThreadLocalUtil;
@@ -33,7 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseResult<String> login(String code) {
-
         ResponseResult<Long> result = serviceDriverUserClient.login(code);
         if (result.getCode() != StatusCode.SUCCESS.getCode()) {
             return ResponseResult.fail("request failure");
@@ -58,5 +58,14 @@ public class UserServiceImpl implements UserService {
         UserInfoVo userInfoVo = new UserInfoVo();
         BeanUtils.copyProperties(customerInfo, userInfoVo);
         return ResponseResult.success(userInfoVo);
+    }
+
+    @Override
+    public ResponseResult<Boolean> updateUserPhone(UpdateUserPhoneDto updateUserPhoneDto) {
+        ResponseResult<String> stringResponseResult = serviceDriverUserClient.updateUserPhone(updateUserPhoneDto);
+        if (stringResponseResult.getCode() != StatusCode.SUCCESS.getCode()) {
+            return ResponseResult.fail(Boolean.FALSE);
+        }
+        return ResponseResult.success(Boolean.TRUE);
     }
 }
